@@ -1,12 +1,12 @@
 @charset "ISO-8859-1";
 table {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: Verdana;
   border-collapse: collapse;  
-  width: 70%;
+  width: 60%;
 }
 
 table td, table th {
-  border: 2px solid #ddd;
+  border: 1px solid #ddd;
   padding: 10px;  
 }
 
@@ -18,7 +18,7 @@ table th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: coral;
+  background-color: pink;
   color: white;
 }
 
