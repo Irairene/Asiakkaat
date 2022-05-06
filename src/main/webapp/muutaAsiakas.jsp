@@ -4,12 +4,15 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<title>Päivitä tiedot</title>
+</head>
+<body>
 <script src="scripts/main.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/main.css">
 
-<title>Uusi asiakas</title>
+<title>Päivitä asiakas</title>
 </head>
 <body>
 <form id="tiedot">
@@ -34,10 +37,11 @@
       <td><input type="text" name="sukunimi" id="sukunimi"></td>
       <td><input type="text" name="puhelin" id="puhelin"></td>
       <td><input type="text" name="sposti" id="sposti"></td>
-      <td><input type="submit" id="tallenna" value="Lisää"></td>
+      <td><input type="submit" id="tallenna" value="Päivitä"></td>
 </tr>
 </tbody>
 </table>
+<input type="hidden" name="vanhaetunimi" id="vanhaetunimi">
 </form>
 <span id="ilmo"></span>
 </body>
@@ -46,6 +50,19 @@ $(document).ready(function() {
 	$("#takaisin").click(function(){
 		document.location="listaaAsiakkaat.jsp";
 	});
+	
+	var etunimi = requestURLParam("etunimi");
+	$.ajax({url:"asiakkaat/haeyksi/"+etunimi, type:"GET", dataType:"json", success:function(result) {
+	$("#vanhaetunimi").val(result.etunimi);
+	$("#etunimi").val(result.etunimi);
+	$("#sukunimi").val(result.sukunimi);
+	$("#puhelin").val(result.puhelin);
+	$("#sposti").val(result.sposti);
+	
+	
+	}});
+
+	
 	$("#tiedot").validate({
 		rules: {
 			etunimi: {
@@ -88,22 +105,23 @@ $(document).ready(function() {
 		},
 		
 		submitHandler: function(form) {
-			lisaaTiedot();
+			paivitaTiedot();
 		}
 					
 	});
 });
 
-function lisaaTiedot(){
+function paivitaTiedot(){
 	var formJsonStr = formDataJsonStr($("#tiedot").serializeArray());
-	$.ajax({url:"asiakkaat", data:formJsonStr, type:"POST", dataType:"json", success:function(result) { //result on joko {"response:1"} tai {"response:0"}       
+	$.ajax({url:"asiakkaat", data:formJsonStr, type:"PUT", dataType:"json", success:function(result) { //result on joko {"response:1"} tai {"response:0"}       
 		if(result.response==0){
-	      	$("#ilmo").html("Asiakkaan lisääminen epäonnistui.");
+	      	$("#ilmo").html("Asiakkaan tietojen päivittäminen epäonnistui.");
 	      }else if(result.response==1){			
-	      	$("#ilmo").html("Asiakkaan lisääminen onnistui.");
-	      	$("#etunimi", "#sukunimi","#puhelin", "#sposti").val("");
+	      	$("#ilmo").html("Asiakkaan tietojen päivittäminen onnistui.");
+	      	$("#asiakas_id, #etunimi", "#sukunimi","#puhelin", "#sposti").val("");
 			}
 	  }});	
 	}
-	</script>
-	</html>
+
+</script>
+</html>

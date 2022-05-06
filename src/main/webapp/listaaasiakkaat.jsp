@@ -64,8 +64,9 @@ function haeTiedot(){
         	htmlStr+="<td>"+field.etunimi+"</td>";
         	htmlStr+="<td>"+field.sukunimi+"</td>";
         	htmlStr+="<td>"+field.puhelin+"</td>";
-        	htmlStr+="<td>"+field.sposti+"</td>";   
-        	htmlStr+="<td><span class='poista' onclick=poista('"+field.etunimi+"')>Poista</span></td>";
+        	htmlStr+="<td>"+field.sposti+"</td>"; 
+        	htmlStr+="<td><a href='muutaAsiakas.jsp?etunimi="+field.etunimi+"'>Muuta</a>&nbsp;"; 
+        	htmlStr+="<span class='poista' onclick=poista('"+field.etunimi+"')>Poista</span></td>";
         	htmlStr+="</tr>";
         	$("#listaus tbody").append(htmlStr);
         });

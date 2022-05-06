@@ -110,13 +110,13 @@ public class Dao {
 		}
 		return paluuArvo;
 	}
-		public boolean poistaAsiakas(String etuNimi){ 
+		public boolean poistaAsiakas(String etunimi){ 
 			boolean paluuArvo=true;
-			sql="DELETE FROM asiakkaat WHERE etuNimi=?";						  
+			sql="DELETE FROM asiakkaat WHERE etunimi=?";						  
 			try {
 				con = yhdista();
 				stmtPrep=con.prepareStatement(sql); 
-				stmtPrep.setString(1, etuNimi);			
+				stmtPrep.setString(1, etunimi);			
 				stmtPrep.executeUpdate();
 		        con.close();
 			} catch (Exception e) {				
@@ -125,6 +125,54 @@ public class Dao {
 			}				
 			return paluuArvo;
 		}	
+		
+		public Asiakas etsiAsiakas(String etunimi) {
+			Asiakas asiakas = null;
+			sql = "SELECT * FROM asiakkaat WHERE etunimi=?";
+			try {
+				con = yhdista();
+				if(con!=null) {
+				stmtPrep=con.prepareStatement(sql); 
+				stmtPrep.setString(1, etunimi);
+				rs = stmtPrep.executeQuery();
+				if(rs.isBeforeFirst()) {
+					rs.next();
+					asiakas = new Asiakas();
+					asiakas.setEtunimi(rs.getString(1));
+					asiakas.setSukunimi(rs.getString(2));
+					asiakas.setPuhelin(rs.getString(3));
+					asiakas.setSposti(rs.getString(4));
+				}
+					
+				}
+				con.close();
+		}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			return asiakas;
 	}
+		
+		public boolean muutaAsiakas(Asiakas asiakas, String etunimi){ 
+			boolean paluuArvo=true;
+			sql="UPDATE asiakkaat SET etunimi=?, sukunimi=?, puhelin=?, sposti? WHERE etunimi=?";						  
+			try {
+				con = yhdista();
+				stmtPrep=con.prepareStatement(sql); 
+				stmtPrep.setInt(1, asiakas.getAsiakas_id());
+				stmtPrep.setString(2, asiakas.getEtunimi());		
+				stmtPrep.setString(3,  asiakas.getSukunimi());	
+				stmtPrep.setString(4,  asiakas.getPuhelin());
+				stmtPrep.setString(5,  asiakas.getSposti());
+				stmtPrep.setString(6,  etunimi); //vanha etunimi vastaa välitettyä tietoa
+				stmtPrep.executeUpdate();
+		        con.close();
+			} catch (Exception e) {				
+				e.printStackTrace();
+				paluuArvo=false;
+			}				
+			return paluuArvo;
+		}	
+}
 
 
